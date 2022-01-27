@@ -43,10 +43,10 @@ The sources repository of a module can be structured as follow:
 
 Module images can use a list of well-known labels to configure the system:
 
-- `org.nethserver.tcp-ports-demand`: see [Port allocation](#port-allocation)
+- `org.nethserver.tcp-ports-demand`: see [Port allocation](../port_allocation)
 - `org.nethserver.images`: see [Service images](#service-images)
 - `org.nethserver.rootfull`: can be `0` or `1`, if set to `0` the module will run podman in rootless mode,
-  if set to `1` the module will run podman in rootfull mode. See [Rootless vs Rootfull](#rootless-vs-rootfull)
+  if set to `1` the module will run podman in rootfull mode. See [Rootless vs Rootfull](../rootless_rootfull)
 - `org.nethserver.authorizations`: see [Roles and authorizations](#roles-and-authorizations)
 
 Labels are set by `build-image.sh`, when the image is built.
