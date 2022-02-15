@@ -115,8 +115,11 @@ def list_available(rdb):
 def list_installed(rdb):
     installed = {}
     logos = _get_cached_logo_urls(rdb)
+    core_modules = ['samba', 'traefik', 'loki', 'promtail', 'ldapproxy']
+    account_provider_modules = ['samba']
     # Search for installed modules
     for m in rdb.scan_iter('module/*/environment'):
+        tags = []
         vars = rdb.hgetall(m)
         module_ui_name = rdb.get(m.removesuffix('/environment') + '/ui_name') or ""
         url, sep, tag = vars['IMAGE_URL'].partition(":")
@@ -124,7 +127,11 @@ def list_installed(rdb):
         logo = logos.get(image) or ''
         if url not in installed.keys():
             installed[url] = []
-        installed[url].append({ 'id': vars["MODULE_ID"], 'ui_name': module_ui_name, 'node': vars['NODE_ID'], 'digest': vars["IMAGE_DIGEST"], 'source': url, 'version': tag, 'logo': logo, 'module': image })
+        if image in core_modules:
+            tags.append('core')
+        if image in account_provider_modules:
+            tags.append('account_provider')
+        installed[url].append({ 'id': vars["MODULE_ID"], 'ui_name': module_ui_name, 'node': vars['NODE_ID'], 'digest': vars["IMAGE_DIGEST"], 'source': url, 'version': tag, 'logo': logo, 'module': image, 'tags': tags })
 
     return installed
 
