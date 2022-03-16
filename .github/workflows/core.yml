@@ -50,4 +50,9 @@ jobs:
           set -e
           trap 'buildah logout ghcr.io' EXIT
           buildah login -u ${{ github.actor }} --password-stdin ghcr.io <<<"${{ secrets.GITHUB_TOKEN }}"
-          for image in ${{ steps.build.outputs.images }} ; do buildah push $image docker://${image}:${IMAGETAG:-latest} ; done
+          for image in ${{ steps.build.outputs.images }} ; do
+              tag=${IMAGETAG:-latest}
+              buildah push $image docker://${image}:$tag
+              # Push also stable label if this is not a pre-release
+              if echo -n $tag | grep -q -v '-' ; buildah push $image docker://${image}:ns8-stable ; fi
+          done
