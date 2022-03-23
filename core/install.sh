@@ -20,6 +20,7 @@
 # along with NethServer.  If not, see COPYING.
 #
 
+
 set -e
 metadata=${METADATA:-https://raw.githubusercontent.com/nethserver/ns8-repomd/repomd/repodata.json}
 repodata=""
